@@ -7,6 +7,7 @@ import json
 
 UNSIG_URL = "https://www.unsigs.com/details/"
 UNSIGS_MINTED = 31119
+OUT_FILE = "unsig.json"
 
 
 def find_between( s, first, last ):
@@ -35,14 +36,14 @@ def unsig_job(i, unsig_list):
         html_content = requests.get(url).text
         soup = BeautifulSoup(html_content, "lxml")
         res = soup.find_all("li")
-        res = str(res)
+        res = str(res).replace("'","") # clean data by removing single quotations
         # parse the html 
         properties = csv_split(find_between(res, "This unsig NFT has <b>","</b>"))
         colors = csv_split(find_between(res, "Colors:</b> [","]"))
         distributions = csv_split(find_between(res, "Distributions:</b> [","]"))
         rotations = csv_split(find_between(res, "Rotations:</b> [","]"))
         multipliers = csv_split(find_between(res, "Multipliers:</b> [","]"))
-        # format the data
+        # format the data as dict
         data = [{'index': i},
             {'properties': properties},
             {'colors':colors},
@@ -78,7 +79,7 @@ if __name__ == "__main__":
     # convert multithreaded proxy list into standard list for json
     unsig_list = list(unsig_list)
     # save to file
-    with open("unsig.json", "w") as outfile:
+    with open(OUT_FILE, "w") as outfile:
         json.dump(unsig_list, outfile)
 
-    print("finished... unsig data saved to unsig.json")
+    print("finished... scraped unsig data saved to \"" + OUT_FILE + "\"")
