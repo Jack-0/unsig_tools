@@ -1,10 +1,11 @@
 # unsig_tools
+A collection python scripts for interacting with unsigned algorithms
 
 ## scraper.py
-A pyhton script that scrapes 'https://www.unsigs.com/details/UNSIG_ID' and saves the data to a file called 'unsig.json'
+A python script that scrapes 'https://www.unsigs.com/details/UNSIG_ID' and saves the data to a file called 'unsig.json'
 
 ## parser.py
-A pyhton script to parse data from 'unsig.json'
+A python script to parse data from 'unsig.json'
 
 ## unsig.json
 unsinged algorithms data in json format
