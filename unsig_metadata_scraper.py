@@ -72,7 +72,7 @@ if __name__ == "__main__":
         p.start()
         # wait 1/10 second to avoid socket errors and OS threading errors
         time.sleep(0.1)
-        print("Progress " + str("{:05d}".format(len(unsig_list))) + "/" + str("{:05d}".format(UNSIGS_MINTED)),end="\r")
+        print("Progress " + str("{:05d}".format(i)) + "/" + str("{:05d}".format(UNSIGS_MINTED)),end="\r")
      
     # wait until all processes are done
     while len(unsig_list) != UNSIGS_MINTED:
