@@ -53,13 +53,15 @@ def unsig_job(i, unsig_list):
             ]
         unsig_list.append(data)
         return
-    except ConnectionRefusedError:
+    except:
         # error wait and recursively try again
         time.sleep(0.1)
         unsig_job(i, unsig_list)
 
 if __name__ == "__main__":
     
+    #lst_a = []
+    #unsig_job(26140, lst_a)
     # multiprocessing vars
     manager = Manager()
     unsig_list = manager.list() # shared dict
@@ -70,14 +72,20 @@ if __name__ == "__main__":
         p.start()
         # wait 1/10 second to avoid socket errors and OS threading errors
         time.sleep(0.1)
-        print("Progress " + str("{:05d}".format(i)) + "/" + str("{:05d}".format(UNSIGS_MINTED)))
+        print("Progress " + str("{:05d}".format(len(unsig_list))) + "/" + str("{:05d}".format(UNSIGS_MINTED)),end="\r")
      
     # wait until all processes are done
     while len(unsig_list) != UNSIGS_MINTED:
         pass
     
+    print("")
+
     # convert multithreaded proxy list into standard list for json
     unsig_list = list(unsig_list)
+    
+    # order the set (the multiprocessing muddles it up)
+    unsig_list = sorted(unsig_list, key=lambda i: i[0]['index'])
+
     # save to file
     with open(OUT_FILE, "w") as outfile:
         json.dump(unsig_list, outfile)
